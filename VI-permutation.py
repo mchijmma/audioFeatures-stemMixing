@@ -10,17 +10,9 @@ from datetime import datetime
 import numpy as np 
 import pandas as pd
 
-#from pylab import plot, show, figure, imshow
-#%matplotlib inline
-#import matplotlib.pyplot as plt
-#plt.style.use('ggplot')
 
-#import itertools
 import os
-#import sox
-#import shutil
 import pickle
-#import gc
 import sys
 from collections import OrderedDict
 
@@ -40,9 +32,9 @@ from sklearn.tree import DecisionTreeRegressor
 from rf_perm_feat_import import PermutationImportance
 
 
-# In[2]:
 
-#Constant Variables python
+
+#Constant Variables 
 kGroup = sys.argv[1]
 kInstrument = sys.argv[1]
 kSampleRate = 44100
@@ -52,14 +44,7 @@ kFeatures = 1812 #Find a way to not hard-code this.
 path = './Music/Data/MedleyDB/Features/%s/%s/' % (sys.argv[2], kType)
 
 
-#Constant Variables Jupyter
-# kGroup = 'tack piano'
-# kInstrument = 'tack piano'
-# kSampleRate = 44100
-# kN = 100 #Number of features to take into account initially.
-# kType = 'mono'
-# kFeatures = 1812 #Find a way to not hard-code this.     
-# path = './Music/Data/MedleyDB/Features/no_boot_nw_2000/%s/' % (kType)
+
 
 #Loads all global variables.
 
@@ -84,7 +69,6 @@ def loadPickle(name):
   return loaded_data1
 
 
-# In[3]:
 
 #%%
 #Only if you initialized Variables.
@@ -115,9 +99,7 @@ gPreSelectedFeatures = loadPickle('gPreSelectedFeatures.pkl')
 gPredictionFeatures = loadPickle('gPredictionFeatures.pkl')
 
 
-# In[4]:
 
-#%%
     
 # Definition of functions. 
     
@@ -214,22 +196,7 @@ def getNumberTrees(_X, _y, min_estimators = 10, max_estimators = 1000, epoch = 1
     
     return oob_error_ntrees, n
 
-# Plots OOB error against different type of iterations. 
-#def plotOOBError(error, xlabel = 'n_features', ylabel = 'OOB error rate'):
-#    _x = []
-#    _y = []
-    
-#    for tupla in error:
-#        _x.append(tupla[0])
-#        _y.append(tupla[1])
-#    plt.rcParams['figure.figsize'] = (18,15)    
-#    plt.plot(_x, _y, 'k*')
-    
-#    plt.xlim(np.min(_x), np.max(_x)+100)
-#    plt.xlabel(xlabel)
-#    plt.ylabel(ylabel)
-#    plt.legend(loc="upper right")
-#    plt.show()
+
 
 def getNameFeaturesIdx(idx, nameFeatures):#, NameFeatures = gNameFeatures):
   a = []
@@ -437,376 +404,13 @@ min_abs_scaler = preprocessing.MaxAbsScaler()
 
 
 
-
-
-
-# In[14]:
-
-# # Start Random Forest Classification
-# # This is done only the first time.
-# kSampleRate = 44100
-# kN = 2048
-# kType = 'mono'
-# kFeatures = 1812 #Find a way to not hard-code this.
-# X = OrderedDict()
-# y = OrderedDict()
-# XRaw = OrderedDict()
-# yRaw = OrderedDict()
-# XStem = OrderedDict()
-# yStem = OrderedDict()
-
-# gNameFeatures = OrderedDict()
-# gListTracks = OrderedDict()
-
-# gImportances = OrderedDict()
-# gPreSelectedImportances = OrderedDict()
-# gPreSelectedFeatures = OrderedDict()
-
-# gInterpretationOOBError = OrderedDict()
-# gInterpretationIdx = OrderedDict()
-# gInterpretationFeatures = OrderedDict()
-
-# gPredictionOOBError = OrderedDict()
-# gPredictionFeatures = OrderedDict()
-# gPredictionIdx = OrderedDict()
-# gPredictionOOBErrorGain = OrderedDict()
-
-
-# # Loads numpy arrays
-# loadsNumpyArray('electric bass')
-# loadsNumpyArray('piano')
-# loadsNumpyArray('tack piano')
-# loadsNumpyArray('electric piano')
-# loadsNumpyArray('synthesizer')
-# loadsNumpyArray('acoustic guitar')
-# loadsNumpyArray('clean electric guitar')
-# loadsNumpyArray('distorted electric guitar')
-# loadsNumpyArray('banjo')
-# loadsNumpyArray('male singer')
-# loadsNumpyArray('female singer')
-# loadsNumpyArray('male rapper')
-# loadsNumpyArray('vocalists')
-# ##%%
-
-# # Create 'bass' group
-# kGroup = 'bass1'
-# createGroupInstruments(kGroup,['electric bass'])
-# ##%%
-# # Create 'key' group
-# kGroup = 'keys1'
-# createGroupInstruments(kGroup,['piano',
-#                               'electric piano'])
-# ##%%
-# # Create 'key' group
-# kGroup = 'keys-tack1'
-# createGroupInstruments(kGroup,['piano',
-#                               'tack piano',
-#                               'electric piano'])
-# ##%%
-# # Create 'key-synth' group
-# kGroup = 'keys-synth1'
-# createGroupInstruments(kGroup,['piano',
-#                               'electric piano',
-#                               'synthesizer'])
-#                               # Create 'key-synth' group
-# kGroup = 'keys-all1'
-# createGroupInstruments(kGroup,['piano',
-#                               'electric piano',
-#                               'tack piano',
-#                               'synthesizer'])
-# ##%%
-# # Create 'vocal' group
-# kGroup = 'vocal1'
-# createGroupInstruments(kGroup,['male singer',
-#                               'female singer',
-#                               'male rapper'])
-# ##%%
-# # Create 'vocal' group
-# kGroup = 'vocal-vocalists1'
-# createGroupInstruments(kGroup,['male singer',
-#                               'female singer',
-#                               'vocalists',
-#                               'male rapper'])
-# ##%%
-# # Create 'guitar' group
-# kGroup = 'guitar1'
-# createGroupInstruments(kGroup,['acoustic guitar',
-#                               'clean electric guitar',
-#                               'distorted electric guitar',
-#                               'banjo'])
-
-# # Create 'bass' group
-# kGroup = 'bass2'
-# createGroupInstruments(kGroup,['electric bass'])
-# ##%%
-# # Create 'key' group
-# kGroup = 'keys2'
-# createGroupInstruments(kGroup,['piano',
-#                               'electric piano'])
-# ##%%
-# # Create 'key' group
-# kGroup = 'keys-tack2'
-# createGroupInstruments(kGroup,['piano',
-#                               'tack piano',
-#                               'electric piano'])
-# ##%%
-# # Create 'key-synth' group
-# kGroup = 'keys-synth2'
-# createGroupInstruments(kGroup,['piano',
-#                               'electric piano',
-#                               'synthesizer'])
-#                               # Create 'key-synth' group
-# kGroup = 'keys-all2'
-# createGroupInstruments(kGroup,['piano',
-#                               'electric piano',
-#                               'tack piano',
-#                               'synthesizer'])
-# ##%%
-# # Create 'vocal' group
-# kGroup = 'vocal2'
-# createGroupInstruments(kGroup,['male singer',
-#                               'female singer',
-#                               'male rapper'])
-# ##%%
-# # Create 'vocal' group
-# kGroup = 'vocal-vocalists2'
-# createGroupInstruments(kGroup,['male singer',
-#                               'female singer',
-#                               'vocalists',
-#                               'male rapper'])
-# ##%%
-# # Create 'guitar' group
-# kGroup = 'guitar2'
-# createGroupInstruments(kGroup,['acoustic guitar',
-#                               'clean electric guitar',
-#                               'distorted electric guitar',
-#                               'banjo'])
-
-# # Create 'bass' group
-# kGroup = 'bass3'
-# createGroupInstruments(kGroup,['electric bass'])
-# ##%%
-# # Create 'key' group
-# kGroup = 'keys3'
-# createGroupInstruments(kGroup,['piano',
-#                               'electric piano'])
-# ##%%
-# # Create 'key' group
-# kGroup = 'keys-tack3'
-# createGroupInstruments(kGroup,['piano',
-#                               'tack piano',
-#                               'electric piano'])
-# ##%%
-# # Create 'key-synth' group
-# kGroup = 'keys-synth3'
-# createGroupInstruments(kGroup,['piano',
-#                               'electric piano',
-#                               'synthesizer'])
-#                               # Create 'key-synth' group
-# kGroup = 'keys-all3'
-# createGroupInstruments(kGroup,['piano',
-#                               'electric piano',
-#                               'tack piano',
-#                               'synthesizer'])
-# ##%%
-# # Create 'vocal' group
-# kGroup = 'vocal3'
-# createGroupInstruments(kGroup,['male singer',
-#                               'female singer',
-#                               'male rapper'])
-# ##%%
-# # Create 'vocal' group
-# kGroup = 'vocal-vocalists3'
-# createGroupInstruments(kGroup,['male singer',
-#                               'female singer',
-#                               'vocalists',
-#                               'male rapper'])
-# ##%%
-# # Create 'guitar' group
-# kGroup = 'guitar3'
-# createGroupInstruments(kGroup,['acoustic guitar',
-#                               'clean electric guitar',
-#                               'distorted electric guitar',
-#                               'banjo'])
-
-# # Create 'bass' group
-# kGroup = 'bass4'
-# createGroupInstruments(kGroup,['electric bass'])
-# ##%%
-# # Create 'key' group
-# kGroup = 'keys4'
-# createGroupInstruments(kGroup,['piano',
-#                               'electric piano'])
-# ##%%
-# # Create 'key' group
-# kGroup = 'keys-tack4'
-# createGroupInstruments(kGroup,['piano',
-#                               'tack piano',
-#                               'electric piano'])
-# ##%%
-# # Create 'key-synth' group
-# kGroup = 'keys-synth4'
-# createGroupInstruments(kGroup,['piano',
-#                               'electric piano',
-#                               'synthesizer'])
-#                               # Create 'key-synth' group
-# kGroup = 'keys-all4'
-# createGroupInstruments(kGroup,['piano',
-#                               'electric piano',
-#                               'tack piano',
-#                               'synthesizer'])
-# ##%%
-# # Create 'vocal' group
-# kGroup = 'vocal4'
-# createGroupInstruments(kGroup,['male singer',
-#                               'female singer',
-#                               'male rapper'])
-# ##%%
-# # Create 'vocal' group
-# kGroup = 'vocal-vocalists4'
-# createGroupInstruments(kGroup,['male singer',
-#                               'female singer',
-#                               'vocalists',
-#                               'male rapper'])
-# ##%%
-# # Create 'guitar' group
-# kGroup = 'guitar4'
-# createGroupInstruments(kGroup,['acoustic guitar',
-#                               'clean electric guitar',
-#                               'distorted electric guitar',
-#                               'banjo'])
-
-# # Create 'bass' group
-# kGroup = 'bass5'
-# createGroupInstruments(kGroup,['electric bass'])
-# ##%%
-# # Create 'key' group
-# kGroup = 'keys5'
-# createGroupInstruments(kGroup,['piano',
-#                               'electric piano'])
-# ##%%
-# # Create 'key' group
-# kGroup = 'keys-tack5'
-# createGroupInstruments(kGroup,['piano',
-#                               'tack piano',
-#                               'electric piano'])
-# ##%%
-# # Create 'key-synth' group
-# kGroup = 'keys-synth5'
-# createGroupInstruments(kGroup,['piano',
-#                               'electric piano',
-#                               'synthesizer'])
-#                               # Create 'key-synth' group
-# kGroup = 'keys-all5'
-# createGroupInstruments(kGroup,['piano',
-#                               'electric piano',
-#                               'tack piano',
-#                               'synthesizer'])
-# ##%%
-# # Create 'vocal' group
-# kGroup = 'vocal5'
-# createGroupInstruments(kGroup,['male singer',
-#                               'female singer',
-#                               'male rapper'])
-# ##%%
-# # Create 'vocal' group
-# kGroup = 'vocal-vocalists5'
-# createGroupInstruments(kGroup,['male singer',
-#                               'female singer',
-#                               'vocalists',
-#                               'male rapper'])
-# ##%%
-# # Create 'guitar' group
-# kGroup = 'guitar5'
-# createGroupInstruments(kGroup,['acoustic guitar',
-#                               'clean electric guitar',
-#                               'distorted electric guitar',
-#                               'banjo'])
-
-# ##%%
-# # SAVE !
-
-# #
-# dumpPickle(X, 'X.pkl')
-# dumpPickle(y, 'y.pkl')
-# dumpPickle(XRaw, 'XRaw.pkl')
-# dumpPickle(yRaw, 'yRaw.pkl')
-# dumpPickle(XStem, 'XStem.pkl')
-# dumpPickle(yStem, 'yStem.pkl')
-
-# dumpPickle(gListTracks, 'gListTracks.pkl')
-# dumpPickle(gNameFeatures, 'gNameFeatures.pkl')
-
-
-# dumpPickle(gImportances, 'gImportances.pkl')
-# dumpPickle(gPreSelectedImportances, 'gPreSelectedImportances.pkl')
-
-
-
-# dumpPickle(gInterpretationOOBError, 'gInterpretationOOBError.pkl')
-# dumpPickle(gInterpretationIdx, 'gInterpretationIdx.pkl')
-# dumpPickle(gInterpretationFeatures, 'gInterpretationFeatures.pkl')
-
-# dumpPickle(gPredictionOOBError, 'gPredictionOOBError.pkl')
-# dumpPickle(gPredictionIdx, 'gPredictionIdx.pkl')
-# dumpPickle(gPredictionOOBErrorGain, 'gPredictionOOBErrorGain.pkl')
-
-# dumpPickle(gPreSelectedFeatures, 'gPreSelectedFeatures.pkl')
-# dumpPickle(gPredictionFeatures, 'gPredictionFeatures.pkl')
-
-
-# In[ ]:
-
-# #%% PYTHON
-# # if you decide to go ahead with an scalling. 
-# A = X[kGroup][:]
-# #A = robust_scaler.fit_transform(A)
-# #A = preprocessing.normalize(A)
-# #A = min_max_scaler.fit_transform(A)
-# #A = min_abs_scaler.fit_transform(A)
-# #A = min_abs_scaler.fit_transform(X_rs)
-
-# #%%
-
-# # Performs 3 iterations of feature removal, returns final array, final selected features,
-# # dataframe, and three dicts that were created in the process.
-
-# startTime2 = datetime.now()
-
-# if sys.argv[3] == 'Permutation':
-#   print 'Permutation selected'
-#   A, features, df, d_1, d_2, d_3, d_4, n = removeFeatures4Permutation(A, y[kGroup], nEstimators=2000)
-  
-# elif sys.argv[3] == 'No boot':
-#   print 'No boot - Gini method selected'
-#   A, features, df, d_1, d_2, d_3, d_4, n = removeFeatures3(A, y[kGroup], nEstimators=2000, _type = 'No boot')
-  
-# elif sys.argv[3] == 'Boot':
-#   print 'Boot - Gini method selected'
-#   A, features, df, d_1, d_2, d_3, d_4, n = removeFeatures3(A, y[kGroup], nEstimators=2000, _type = 'Boot')  
-
-# print '\nExecuted in: %s. \n ' % (str(datetime.now() - startTime2))
-# #%%
-# saveDictsinGVariables(d_1, d_2, d_3, d_4, n, df, A, features)
-
-
-# In[5]:
-
-#kGroup = 'tack piano'
-#kInstrument = 'tack piano'
-
 _A = X[kGroup][:]
 #_A = robust_scaler.fit_transform(_A)
 label = y[kGroup]
-#features = gReducedFeatures[kGroup]
-#OR STEP BY STEP
+
 
 startTime2 = datetime.now() 
 
-#gDeletedFeatures2 = OrderedDict()
-#gReducedFeatures2 = OrderedDict()
-
-#gReducedFeatures2[kInstrument] = features[:]
   
 startTime = datetime.now() 
 nEstimators = 2000
@@ -882,71 +486,31 @@ for i in range(_iterations):
             importances.append(feature_importances) 
           
           
-      
-      #Gets index of last feature
-    #importances.append(_importances)
-    #importances = np.mean(_importances, axis = 0)   
-    #importances_std = np.std(_importances, axis = 0) 
-    #indices = np.argsort(importances)[::-1]
-    #save deleted idx
-    #_indices.append(indices[-1])
-      
-      
-    #_A = np.delete(_A, np.s_[indices[-1]], 1)
-    #gDeletedFeatures2.setdefault(kInstrument, []).append(gReducedFeatures2[kInstrument][indices[-1]])
-    #del gReducedFeatures2[kInstrument][indices[-1]] 
-    
-      
-    #_error_mean = np.mean(_error, axis = 0) 
-    #oob_error.append((i, _error_mean))
-      
-      #prints every 32 iterations (31) or 11
-    #if i % int(np.ceil(_iterations*0.1)) == 0:
-    #    print 'OOB error: %f \n' % (_error_mean)         
+            
     print '\n iteration # %d\n' % i
 
-#Generate the "OOB error rate" vs. "n_features" plot.
-  
-#plotOOBError(oob_error, xlabel = 'n_features_removed - %s' % kGroup)
-  
-#_features = gReducedFeatures2[kInstrument] + list(reversed(gDeletedFeatures2[kInstrument]))  
-  
-#result = OrderedDict()
-#result['Deleted'] = gDeletedFeatures2[kInstrument]
-#result['Reduced'] = gReducedFeatures2[kInstrument]
-#result['OOB error'] = oob_error
-#result['Features'] = _features
-#result['X'] = _A
+
   
 print '\nExecuted in: %s. \n ' % (str(datetime.now() - startTime))
   
-#return result
 
 
-# In[6]:
-
-#plt.rcParams['figure.figsize'] = (18,15)
-#plt.plot(np.mean(importances, axis = 0),'k', label=kGroup+'_importances')
 
 
-# In[28]:
 
 meanImportances = np.mean(importances, axis = 0)
 stdImportances = np.std(importances, axis = 0)
 kN = 500
-#indices = np.argsort(meanImportances)[::-1]
-#sort the array in descending order
 gImportances[kGroup] = np.vstack((meanImportances, stdImportances))
 indices = np.argsort(meanImportances)[::-1]
 gImportances[kGroup.upper()] = importances
 gImportances[kGroup] = gImportances[kGroup][:,indices]
-#sortedImportances = np.sort(meanImportances)[::-1]
+
 
 #plt.plot(gImportances[kGroup][0][0:kN], 'k^', gImportances[kGroup][0][0:kN], 'k:',label=kGroup+'_mean' )
 #plt.plot(gImportances[kGroup][1][0:kN], 'r^', gImportances[kGroup][1][0:kN], 'r:',label=kGroup+'_std' )
 
 
-# In[58]:
 
 kN = 500
 
@@ -969,21 +533,7 @@ y_1 = regr_1.predict(X_test)
 y_2 = regr_2.predict(X_test)
 y_3 = regr_3.predict(X_test)
 
-# Plot the results
-# plt.figure()
-# plt.scatter(X_stdTrain, y_stdTrain, c="darkorange", label="data")
-# plt.plot(X_stdTrain, y_stdTrain, c="darkorange")
-# plt.plot(X_test, y_1, color="cornflowerblue", label="CART", linewidth=2)
-# #plt.plot(X_test, y_2, color="yellowgreen", label="max_depth=5", linewidth=2)
-# #plt.plot(X_test, y_3, color="blue", label="max_depth=None", linewidth=2)
-# plt.xlabel("data")
-# plt.ylabel("target")
-# plt.title("Decision Tree Regression")
-# plt.legend()
-# plt.show()
 
-
-# In[104]:
 
 threshold = np.min(y_1[y_1>0.0001])
 print '\n TH - STD - %f' % threshold
@@ -993,14 +543,13 @@ gPreSelectedImportances[kGroup] = gImportances[kGroup][0][gImportances[kGroup][0
 #plt.plot(X_test,y_1,'c')
 
 
-# In[61]:
+
 
 idx = indices[0:len(gPreSelectedImportances[kGroup])]
 
 gPreSelectedFeatures[kGroup] = getNameFeaturesIdx(idx, gNameFeatures[kGroup])
 
 
-# In[62]:
 
 XPreSelected = []
 for i in idx:
@@ -1008,13 +557,10 @@ for i in idx:
     XPreSelected.append(_A[:,i])
 XPreSelected = np.asarray(XPreSelected).T  
   
-#df = pd.DataFrame(__X, columns = features)
-  
-#df = df.assign(stem = _y)
 
 
 
-# In[63]:
+
 
 startTime = datetime.now() 
   
@@ -1053,12 +599,12 @@ print '\nExecuted in: %s. \n ' % (str(datetime.now() - startTime))
 
 # In[65]:
 
-#plt.plot(oob_error, 'k^', oob_error, 'k:', label=kGroup+'_oob_interpretation')
+
 
 gInterpretationOOBError[kGroup] = oob_error
 
 
-# In[66]:
+
 
 print 'min_oob error at idx: %d\n' % np.argmin(oob_error)
 gInterpretationFeatures[kGroup] = gPreSelectedFeatures[kGroup][:np.argmin(oob_error)+1]
@@ -1075,12 +621,11 @@ except:
 
 
 
-# In[100]:
+
 
 print '\n TH - Error Gain - %f' % thresholdP
 
 
-# In[93]:
 
 startTime = datetime.now() 
   
@@ -1171,29 +716,5 @@ A = np.asarray(A).T
 saveDictsinGVariables(A)
 
 print '\nExecuted in: %s. \n ' % (str(datetime.now() - startTime2))
-
-
-# In[ ]:
-
-
-
-
-# In[ ]:
-
-
-
-
-# In[ ]:
-
-
-
-
-# In[ ]:
-
-
-
-
-# In[ ]:
-
 
 
